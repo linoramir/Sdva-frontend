@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BtnAction } from "@/components/atoms";
-import { CardUser, Header, Navbar } from "@/components/organisms";
+import { CardUser, Detail, Header, Navbar, Ticket } from "@/components/organisms";
+import type { DetailUser } from "@/components/organisms";
 
 export const TempleDashboard = () => {
   const router = useRouter();
@@ -11,6 +12,12 @@ export const TempleDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedUser, setSelectedUser] = useState<DetailUser | null>(null);
+  const [selectedBoleta, setSelectedBoleta] = useState<{
+    id: string;
+    fecha: string;
+    numeroBoleta: number;
+  } | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -116,7 +123,7 @@ export const TempleDashboard = () => {
         }}
       >
         <Header
-          pageName="Gestión de usuarios"
+          pageName={selectedUser ? selectedUser.nombre : "Gestión de usuarios"}
           user={{ name: "Niklas Schmidt", role: "Stylist Artist" }}
           searchValue={searchValue}
           onSearchChange={setSearchValue}
@@ -125,37 +132,65 @@ export const TempleDashboard = () => {
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           rightAction={
-            <BtnAction
-              variant="primary"
-              className={`d-flex align-items-center justify-content-center gap-2 ${isMobile ? "w-100" : ""}`}
-            >
-              <span>➕</span>
-              <span>{isMobile ? "Agregar" : "Agregar usuario"}</span>
-            </BtnAction>
+            !selectedUser ? (
+              <BtnAction
+                variant="primary"
+                className={`d-flex align-items-center justify-content-center gap-2 ${isMobile ? "w-100" : ""}`}
+              >
+                <span>➕</span>
+                <span>{isMobile ? "Agregar" : "Agregar usuario"}</span>
+              </BtnAction>
+            ) : null
           }
         />
 
         {/* Contenido de la página */}
-        <div style={{ padding: isMobile ? "16px" : "32px" }}>
-          {/* Cards de usuarios - una columna, un usuario por fila */}
-          <div className="row row-cols-1 g-4">
-            {users.map((user) => (
-              <div key={user.id} className="col-12">
-                <CardUser
-                  id={user.id}
-                  nombre={user.nombre}
-                  numeroBoleta={user.numeroBoleta}
-                  correo={user.correo}
-                  telefono={user.telefono}
-                  fechaBoleta={user.fechaBoleta}
-                  saldo={user.saldo}
-                  onOpen={() => console.log("Abrir usuario", user.id)}
-                  onDelete={() => console.log("Eliminar usuario", user.id)}
-                />
-              </div>
-            ))}
+        {selectedBoleta && selectedUser ? (
+          <Ticket
+            numeroBoleta={selectedBoleta.numeroBoleta}
+            fecha={selectedBoleta.fecha}
+            clienteNombre={selectedUser.nombre}
+            clienteLocalidad="Ciudad"
+            clienteCuit=""
+            items={[
+              { cantidad: "1", detalle: "SALDO", importe: "25.000" },
+              { cantidad: "1", detalle: "PAR MEDIA", importe: "1500" },
+              { cantidad: "1", detalle: "ZAPATILLA COLEGIAL", importe: "3500" },
+              { cantidad: "1", detalle: "REMERA BLANCO", importe: "61500" },
+            ]}
+            total={selectedUser.saldo}
+            onBack={() => setSelectedBoleta(null)}
+            isMobile={isMobile}
+          />
+        ) : selectedUser ? (
+          <Detail
+            user={selectedUser}
+            onBack={() => setSelectedUser(null)}
+            onOpenTicket={(boleta) => setSelectedBoleta(boleta)}
+            isMobile={isMobile}
+          />
+        ) : (
+          <div style={{ padding: isMobile ? "16px" : "32px" }}>
+            {/* Cards de usuarios - una columna, un usuario por fila */}
+            <div className="row row-cols-1 g-4">
+              {users.map((user) => (
+                <div key={user.id} className="col-12">
+                  <CardUser
+                    id={user.id}
+                    nombre={user.nombre}
+                    numeroBoleta={user.numeroBoleta}
+                    correo={user.correo}
+                    telefono={user.telefono}
+                    fechaBoleta={user.fechaBoleta}
+                    saldo={user.saldo}
+                    onOpen={() => setSelectedUser(user)}
+                    onDelete={() => console.log("Eliminar usuario", user.id)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
