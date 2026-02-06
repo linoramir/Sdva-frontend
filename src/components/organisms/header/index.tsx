@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { ImSearch } from "@/components/atoms/icons";
 import { BtnAction } from "@/components/atoms";
 import { IoMdNotifications } from "react-icons/io";
@@ -41,6 +42,38 @@ export const Header = ({
   onToggleSidebar,
   rightAction,
 }: HeaderProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Cerrar menú al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  const menuOptions = [
+    { id: "cuenta", label: "Cuenta" },
+    { id: "configuracion", label: "Configuración" },
+    { id: "historial", label: "Historial" },
+    { id: "tema", label: "Tema" },
+    { id: "salir", label: "Salir" },
+  ];
+
   return (
     <header
       style={{
@@ -135,30 +168,91 @@ export const Header = ({
           )}
           <div
             style={{
-              width: isMobile ? "32px" : "40px",
-              height: isMobile ? "32px" : "40px",
-              borderRadius: "50%",
-              backgroundColor: "#e0e0e0",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              fontSize: isMobile ? "16px" : "18px",
+              gap: isMobile ? "8px" : "12px",
+              cursor: "pointer",
             }}
+            onClick={toggleMenu}
           >
-            👤
-          </div>
-          {!isMobile && (
-            <>
-              <div>
-                <div style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>
-                  {user.name}
-                </div>
-                <div style={{ fontSize: "12px", color: "#999" }}>{user.role}</div>
-              </div>
-              <span style={{ fontSize: "14px", color: "#666", cursor: "pointer" }} aria-hidden>
-                ▼
+            {!isMobile && (
+              <span style={{ fontSize: "20px", cursor: "pointer" }} aria-hidden>
+                🔔
               </span>
-            </>
+            )}
+            <div
+              style={{
+                width: isMobile ? "32px" : "40px",
+                height: isMobile ? "32px" : "40px",
+                borderRadius: "50%",
+                backgroundColor: "#e0e0e0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: isMobile ? "16px" : "18px",
+              }}
+            >
+              👤
+            </div>
+            {!isMobile && (
+              <>
+                <div>
+                  <div style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>
+                    {user.name}
+                  </div>
+                  <div style={{ fontSize: "12px", color: "#999" }}>{user.role}</div>
+                </div>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: "#666",
+                    cursor: "pointer",
+                    transform: isMenuOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s ease",
+                  }}
+                  aria-hidden
+                >
+                  ▼
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Menú desplegable */}
+          {isMenuOpen && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",
+                right: 0,
+                marginTop: "8px",
+                backgroundColor: "#ffffff",
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                minWidth: "180px",
+                zIndex: 1000,
+                overflow: "hidden",
+              }}
+            >
+              {menuOptions.map((option) => (
+                <div
+                  key={option.id}
+                  style={{
+                    padding: "12px 16px",
+                    fontSize: "14px",
+                    color: "#333",
+                    cursor: "default",
+                    borderBottom:
+                      option.id !== menuOptions[menuOptions.length - 1].id
+                        ? "1px solid #f0f0f0"
+                        : "none",
+                  }}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>
