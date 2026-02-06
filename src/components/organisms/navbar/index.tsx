@@ -1,5 +1,10 @@
 "use client";
 
+import { FaHouseChimneyUser, FaUserGroup } from "react-icons/fa6";
+import { FaDoorOpen } from "react-icons/fa";
+import { RiComputerFill } from "react-icons/ri";
+import { BsClipboardDataFill, BsFileEarmarkSpreadsheetFill } from "react-icons/bs";
+
 export interface NavbarMenuItem {
   id: string;
   label: string;
@@ -117,7 +122,19 @@ export const Navbar = ({
                 gap: "12px",
               }}
             >
-              <span>{item.icon}</span>
+              {item.id === "inicio" ? (
+                <FaHouseChimneyUser style={{ color: "#E6175C" }} />
+              ) : item.id === "usuarios" ? (
+                <FaUserGroup style={{ color: "#E6175C" }} />
+              ) : item.id === "servidores" ? (
+                <RiComputerFill style={{ color: "#E6175C" }} />
+              ) : item.id === "preferencias" ? (
+                <BsClipboardDataFill style={{ color: "#E6175C", fontSize: "30px" }} />
+              ) : item.id === "reportes" ? (
+                <BsFileEarmarkSpreadsheetFill style={{ color: "#E6175C" }} />
+              ) : (
+                <span>{item.icon}</span>
+              )}
               <span>{item.label}</span>
             </div>
           ))}
@@ -138,8 +155,8 @@ export const Navbar = ({
               alignItems: "center",
               gap: "12px",
             }}
-          >
-            <span>🚪</span>
+            >
+            <FaDoorOpen style={{ color: "#E6175C" }} />
             <span>Logout</span>
           </div>
         </nav>
