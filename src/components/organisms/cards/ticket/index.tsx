@@ -1,49 +1,30 @@
 "use client";
 
 import { BtnAction } from "@/components/atoms";
-
-export interface TicketItem {
-  cantidad?: string;
-  detalle: string;
-  precioUnitario?: string;
-  importe: string;
-}
-
-export interface TicketProps {
-  numeroBoleta: number;
-  fecha: string;
-  fechaCreada?: string;
-  fechaPagada?: string;
-  clienteNombre: string;
-  clienteLocalidad?: string;
-  clienteCuit?: string;
-  clienteDni?: string;
-  items: TicketItem[];
-  total: string;
-  onBack: () => void;
-  isMobile?: boolean;
-}
+import type { ITicket } from "@/interfaces";
 
 export const Ticket = ({
-  numeroBoleta,
-  fecha,
-  fechaCreada,
-  fechaPagada,
-  clienteNombre,
-  clienteCuit,
-  clienteDni,
+  receiptNumber,
+  date,
+  createdAt,
+  paidAt,
+  clientName,
+  clientLocation,
+  clientCuit,
+  clientDni,
   items,
+  total,
   onBack,
   isMobile = false,
-}: TicketProps) => {
+}: ITicket) => {
   // Parsear fecha creada
-  const fechaCreadaParts = (fechaCreada || fecha).split("/");
+  const fechaCreadaParts = (createdAt || date).split("/");
   const diaCreada = fechaCreadaParts[0] || "";
   const mesCreada = fechaCreadaParts[1] || "";
   const añoCreada = fechaCreadaParts[2] || "";
 
   // Parsear fecha pagada
-  const fechaPagadaParts = (fechaPagada || fecha).split("/");
+  const fechaPagadaParts = (paidAt || date).split("/");
   const diaPagada = fechaPagadaParts[0] || "";
   const mesPagada = fechaPagadaParts[1] || "";
   const añoPagada = fechaPagadaParts[2] || "";
@@ -53,7 +34,7 @@ export const Ticket = ({
     const suma = items.reduce((acc, item) => {
       // Remover puntos y convertir a número
       const importeNum =
-        parseFloat(item.importe.replace(/\./g, "").replace(",", ".")) || 0;
+        parseFloat(item.amount.replace(/\./g, "").replace(",", ".")) || 0;
       return acc + importeNum;
     }, 0);
     // Formatear con puntos como separadores de miles
@@ -99,7 +80,7 @@ export const Ticket = ({
           </div>
           <div className="text-end">
             <div style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>
-              N° {numeroBoleta.toString().padStart(4, "0")}
+              N° {receiptNumber.toString().padStart(4, "0")}
             </div>
           </div>
         </div>
@@ -215,20 +196,20 @@ export const Ticket = ({
           <div className="mb-2">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>(a):</span>{" "}
             <span style={{ fontSize: "14px", textDecoration: "underline" }}>
-              {clienteNombre}
+              {clientName}
             </span>
           </div>
           <div className="mb-2 d-flex align-items-center gap-3">
             <div>
               <span style={{ fontSize: "14px", fontWeight: "600" }}>CUIT:</span>{" "}
               <span style={{ fontSize: "14px" }}>
-                {clienteCuit || "________________"}
+                {clientCuit || "________________"}
               </span>
             </div>
             <div>
               <span style={{ fontSize: "14px", fontWeight: "600", color: "#d32f2f" }}>DNI</span>{" "}
               <span style={{ fontSize: "14px" }}>
-                {clienteDni || "________________"}
+                {clientDni || "________________"}
               </span>
             </div>
           </div>
@@ -248,10 +229,10 @@ export const Ticket = ({
             <tbody>
               {items.map((item, index) => (
                 <tr key={index}>
-                  <td className="text-center">{item.cantidad || ""}</td>
-                  <td>{item.detalle}</td>
-                  <td className="text-end">{item.precioUnitario || ""}</td>
-                  <td className="text-end">{item.importe}</td>
+                  <td className="text-center">{item.quantity || ""}</td>
+                  <td>{item.detail}</td>
+                  <td className="text-end">{item.unitPrice || ""}</td>
+                  <td className="text-end">{item.amount}</td>
                 </tr>
               ))}
             </tbody>

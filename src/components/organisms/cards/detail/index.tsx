@@ -2,19 +2,10 @@
 
 import { useState } from "react";
 import { BtnAction } from "@/components/atoms";
-
-export interface DetailUser {
-  id: string;
-  nombre: string;
-  numeroBoleta: number;
-  correo: string;
-  telefono: string;
-  fechaBoleta: string;
-  saldo: string;
-}
+import type { IUser } from "@/interfaces";
 
 export interface DetailProps {
-  user: DetailUser;
+  user: IUser;
   onBack: () => void;
   onOpenTicket?: (boleta: { id: string; fecha: string; numeroBoleta: number }) => void;
   isMobile?: boolean;
@@ -51,7 +42,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
             </a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            {user.nombre}
+            {user.name}
           </li>
         </ol>
       </nav>
@@ -66,7 +57,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
             margin: 0,
           }}
         >
-          {user.nombre}
+          {user.name}
         </h1>
         <div className="d-flex gap-2">
           <BtnAction variant="primary">Enviar factura</BtnAction>
@@ -97,7 +88,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
               <span>🕐</span>
               <span className="text-body-secondary small">Ultima paga</span>
             </div>
-            <div>{user.fechaBoleta}</div>
+            <div>{user.receiptDate}</div>
           </div>
           <div className="col-12 col-md-6 col-lg-3">
             <div className="d-flex align-items-center gap-2 mb-1">
@@ -107,7 +98,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
               </span>
             </div>
             <div className="d-flex align-items-center gap-2">
-              <span>{user.numeroBoleta}</span>
+              <span>{user.receiptNumber}</span>
               <span style={{ cursor: "pointer", fontSize: "12px" }}>📋</span>
             </div>
           </div>
@@ -123,14 +114,14 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
               <span>📧</span>
               <span className="text-body-secondary small">Correo</span>
             </div>
-            <div>{user.correo}</div>
+            <div>{user.email}</div>
           </div>
           <div className="col-12 col-md-6 col-lg-3">
             <div className="d-flex align-items-center gap-2 mb-1">
               <span>📱</span>
               <span className="text-body-secondary small">Teléfono</span>
             </div>
-            <div>{user.telefono}</div>
+            <div>{user.phone}</div>
           </div>
         </div>
       </div>
@@ -254,7 +245,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
                 <div
                   style={{ fontSize: "24px", fontWeight: "700", color: "#333" }}
                 >
-                  {user.saldo}
+                  {user.balance}
                 </div>
               </div>
             </div>
@@ -274,7 +265,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
               <tbody>
                 {[1, 2, 3, 4, 5].map((i) => (
                   <tr key={i}>
-                    <td>{user.fechaBoleta}, 10:55AM</td>
+                    <td>{user.receiptDate}, 10:55AM</td>
                     <td>
                       <span className="badge bg-light text-dark">
                         Transferencia
@@ -285,7 +276,7 @@ export const Detail = ({ user, onBack, onOpenTicket, isMobile = false }: DetailP
                       className="text-end"
                       style={{ color: "#2e7d32", fontWeight: "600" }}
                     >
-                      {user.saldo}
+                      {user.balance}
                     </td>
                   </tr>
                 ))}

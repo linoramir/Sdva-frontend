@@ -202,11 +202,6 @@ export const Header = ({
             }}
             onClick={toggleMenu}
           >
-            {!isMobile && (
-              <span style={{ fontSize: "20px", cursor: "pointer" }} aria-hidden>
-                🔔
-              </span>
-            )}
             <div
               style={{
                 width: isMobile ? "32px" : "40px",
@@ -341,27 +336,15 @@ export const Header = ({
             </div>
           </div>
 )}
-{!isMobile && (
-  <>
-    <BtnAction
-      variant="primary"
-      style={{ whiteSpace: "nowrap" }}
-      onClick={onSearch}
-    >
-      Buscar
-    </BtnAction>
-
-    {rightAction && (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {rightAction}
-      </div>
-    )}
-  </>
+{!isMobile && rightAction && (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+    }}
+  >
+    {rightAction}
+  </div>
 )}
 
       </div>

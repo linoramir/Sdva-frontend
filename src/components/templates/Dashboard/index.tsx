@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { BtnAction } from "@/components/atoms";
 import { GrAddCircle } from "react-icons/gr";
 import { CardUser, Detail, Header, Navbar, Ticket } from "@/components/organisms";
-import type { DetailUser } from "@/components/organisms";
+import type { IUser } from "@/interfaces";
 
 export const TempleDashboard = () => {
   const router = useRouter();
@@ -15,7 +15,7 @@ export const TempleDashboard = () => {
   const [searchValue, setSearchValue] = useState("");
 const [isHovered, setIsHovered] = useState(false);
 
-const [selectedUser, setSelectedUser] = useState<DetailUser | null>(null);
+const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 const [selectedBoleta, setSelectedBoleta] = useState<{
   id: string;
   fecha: string;
@@ -36,60 +36,60 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
   }, []);
 
   // Datos de ejemplo para las cards de usuarios
-  const users = [
+  const users: IUser[] = [
     {
       id: "1",
-      nombre: "Lino ramirez",
-      numeroBoleta: 7000,
-      correo: "ramirezlinogabriel@gmail",
-      telefono: "1164213553",
-      fechaBoleta: "1/2/26",
-      saldo: "$100.000",
+      name: "Lino ramirez",
+      receiptNumber: 7000,
+      email: "ramirezlinogabriel@gmail",
+      phone: "1164213553",
+      receiptDate: "1/2/26",
+      balance: "$100.000",
     },
     {
       id: "2",
-      nombre: "María García",
-      numeroBoleta: 7001,
-      correo: "maria.garcia@mail.com",
-      telefono: "1155667788",
-      fechaBoleta: "15/1/26",
-      saldo: "$250.000",
+      name: "María García",
+      receiptNumber: 7001,
+      email: "maria.garcia@mail.com",
+      phone: "1155667788",
+      receiptDate: "15/1/26",
+      balance: "$250.000",
     },
     {
       id: "3",
-      nombre: "Carlos López",
-      numeroBoleta: 7002,
-      correo: "carlos.lopez@mail.com",
-      telefono: "1199887766",
-      fechaBoleta: "20/1/26",
-      saldo: "$75.000",
+      name: "Carlos López",
+      receiptNumber: 7002,
+      email: "carlos.lopez@mail.com",
+      phone: "1199887766",
+      receiptDate: "20/1/26",
+      balance: "$75.000",
     },
     {
       id: "4",
-      nombre: "Ana Martínez",
-      numeroBoleta: 7003,
-      correo: "ana.martinez@mail.com",
-      telefono: "1122334455",
-      fechaBoleta: "5/2/26",
-      saldo: "$180.000",
+      name: "Ana Martínez",
+      receiptNumber: 7003,
+      email: "ana.martinez@mail.com",
+      phone: "1122334455",
+      receiptDate: "5/2/26",
+      balance: "$180.000",
     },
     {
       id: "5",
-      nombre: "Pedro Sánchez",
-      numeroBoleta: 7004,
-      correo: "pedro.sanchez@mail.com",
-      telefono: "1144556677",
-      fechaBoleta: "28/1/26",
-      saldo: "$320.000",
+      name: "Pedro Sánchez",
+      receiptNumber: 7004,
+      email: "pedro.sanchez@mail.com",
+      phone: "1144556677",
+      receiptDate: "28/1/26",
+      balance: "$320.000",
     },
     {
       id: "6",
-      nombre: "Laura Fernández",
-      numeroBoleta: 7005,
-      correo: "laura.fernandez@mail.com",
-      telefono: "1133445566",
-      fechaBoleta: "10/2/26",
-      saldo: "$95.000",
+      name: "Laura Fernández",
+      receiptNumber: 7005,
+      email: "laura.fernandez@mail.com",
+      phone: "1133445566",
+      receiptDate: "10/2/26",
+      balance: "$95.000",
     },
   ];
 
@@ -126,7 +126,7 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
         }}
       >
         <Header
-          pageName={selectedUser ? selectedUser.nombre : ""}
+          pageName={selectedUser ? selectedUser.name : ""}
           user={{ name: "Niklas Schmidt", role: "Stylist Artist" }}
           searchValue={searchValue}
           onSearchChange={setSearchValue}
@@ -134,48 +134,24 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
           isMobile={isMobile}
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          rightAction={
-{!selectedUser && (
-  <BtnAction
-    variant="primary"
-    className={`d-flex align-items-center justify-content-center gap-2 ${isMobile ? "w-100" : ""}`}
-    style={{
-      backgroundColor: isHovered ? "#E6175C" : "#ffffff",
-      border: "2px solid #E6175C",
-      borderRadius: "12px",
-      color: isHovered ? "#ffffff" : "#E6175C",
-      transition: "all 0.3s ease",
-    }}
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-  >
-    <GrAddCircle
-      size={20}
-      color={isHovered ? "#ffffff" : "#E6175C"}
-      style={{ transition: "color 0.3s ease" }}
-    />
-    <span>{isMobile ? "Agregar" : "Agregar usuario"}</span>
-  </BtnAction>
-)}
-
-          }
+          rightAction={null}
         />
 
         {/* Contenido de la página */}
         {selectedBoleta && selectedUser ? (
           <Ticket
-            numeroBoleta={selectedBoleta.numeroBoleta}
-            fecha={selectedBoleta.fecha}
-            clienteNombre={selectedUser.nombre}
-            clienteLocalidad="Ciudad"
-            clienteCuit=""
+            receiptNumber={selectedBoleta.numeroBoleta}
+            date={selectedBoleta.fecha}
+            clientName={selectedUser.name}
+            clientLocation="Ciudad"
+            clientCuit=""
             items={[
-              { cantidad: "1", detalle: "SALDO", importe: "25.000" },
-              { cantidad: "1", detalle: "PAR MEDIA", importe: "1500" },
-              { cantidad: "1", detalle: "ZAPATILLA COLEGIAL", importe: "3500" },
-              { cantidad: "1", detalle: "REMERA BLANCO", importe: "61500" },
+              { quantity: "1", detail: "SALDO", amount: "25.000" },
+              { quantity: "1", detail: "PAR MEDIA", amount: "1500" },
+              { quantity: "1", detail: "ZAPATILLA COLEGIAL", amount: "3500" },
+              { quantity: "1", detail: "REMERA BLANCO", amount: "61500" },
             ]}
-            total={selectedUser.saldo}
+            total={selectedUser.balance}
             onBack={() => setSelectedBoleta(null)}
             isMobile={isMobile}
           />
@@ -188,53 +164,41 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
           />
         ) : (
           <div style={{ padding: isMobile ? "16px" : "32px" }}>
-            {/* Título izquierda + Agregar usuario derecha (más pequeño) */}
+            {/* Título izquierda + Agregar usuario derecha */}
             <div
               className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4"
               style={{ gap: "12px" }}
             >
               <h2 className="mb-0 fs-5 fw-semibold text-body">Gestión de usuarios</h2>
-              <button
-                type="button"
-                className="card border text-start"
-                style={{
-                  borderRadius: "8px",
-                  borderColor: "#1a237e",
-                  borderStyle: "dashed",
-                  backgroundColor: "rgba(26, 35, 126, 0.04)",
-                  cursor: "pointer",
-                  transition: "background-color 0.2s, border-color 0.2s",
-                  padding: "8px 14px",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(26, 35, 126, 0.08)";
-                  e.currentTarget.style.borderColor = "#0d1542";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(26, 35, 126, 0.04)";
-                  e.currentTarget.style.borderColor = "#1a237e";
-                }}
-              >
-                <span className="d-inline-flex align-items-center gap-1">
-                  <span style={{ fontSize: "1rem" }} aria-hidden>➕</span>
-                  <span className="fw-semibold text-primary" style={{ fontSize: "0.875rem" }}>
-                    {isMobile ? "Agregar" : "Agregar usuario"}
-                  </span>
-                </span>
-              </button>
+              {!selectedUser && (
+                <BtnAction
+                  variant="primary"
+                  className={`d-flex align-items-center justify-content-center gap-2 ${isMobile ? "w-100" : ""}`}
+                  style={{
+                    backgroundColor: isHovered ? "#E6175C" : "#ffffff",
+                    border: "2px solid #E6175C",
+                    borderRadius: "12px",
+                    color: isHovered ? "#ffffff" : "#E6175C",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  <GrAddCircle
+                    size={20}
+                    color={isHovered ? "#ffffff" : "#E6175C"}
+                    style={{ transition: "color 0.3s ease" }}
+                  />
+                  <span>{isMobile ? "Agregar" : "Agregar usuario"}</span>
+                </BtnAction>
+              )}
             </div>
             {/* Lista de usuarios */}
             <div className="row row-cols-1 g-4">
               {users.map((user) => (
                 <div key={user.id} className="col-12">
                   <CardUser
-                    id={user.id}
-                    nombre={user.nombre}
-                    numeroBoleta={user.numeroBoleta}
-                    correo={user.correo}
-                    telefono={user.telefono}
-                    fechaBoleta={user.fechaBoleta}
-                    saldo={user.saldo}
+                    user={user}
                     onOpen={() => setSelectedUser(user)}
                     onDelete={() => console.log("Eliminar usuario", user.id)}
                   />
