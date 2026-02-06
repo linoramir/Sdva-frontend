@@ -126,7 +126,7 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
         }}
       >
         <Header
-          pageName={selectedUser ? selectedUser.nombre : "Gestión de usuarios"}
+          pageName={selectedUser ? selectedUser.nombre : ""}
           user={{ name: "Niklas Schmidt", role: "Stylist Artist" }}
           searchValue={searchValue}
           onSearchChange={setSearchValue}
@@ -188,7 +188,42 @@ const [selectedBoleta, setSelectedBoleta] = useState<{
           />
         ) : (
           <div style={{ padding: isMobile ? "16px" : "32px" }}>
-            {/* Cards de usuarios - una columna, un usuario por fila */}
+            {/* Título izquierda + Agregar usuario derecha (más pequeño) */}
+            <div
+              className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4"
+              style={{ gap: "12px" }}
+            >
+              <h2 className="mb-0 fs-5 fw-semibold text-body">Gestión de usuarios</h2>
+              <button
+                type="button"
+                className="card border text-start"
+                style={{
+                  borderRadius: "8px",
+                  borderColor: "#1a237e",
+                  borderStyle: "dashed",
+                  backgroundColor: "rgba(26, 35, 126, 0.04)",
+                  cursor: "pointer",
+                  transition: "background-color 0.2s, border-color 0.2s",
+                  padding: "8px 14px",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(26, 35, 126, 0.08)";
+                  e.currentTarget.style.borderColor = "#0d1542";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(26, 35, 126, 0.04)";
+                  e.currentTarget.style.borderColor = "#1a237e";
+                }}
+              >
+                <span className="d-inline-flex align-items-center gap-1">
+                  <span style={{ fontSize: "1rem" }} aria-hidden>➕</span>
+                  <span className="fw-semibold text-primary" style={{ fontSize: "0.875rem" }}>
+                    {isMobile ? "Agregar" : "Agregar usuario"}
+                  </span>
+                </span>
+              </button>
+            </div>
+            {/* Lista de usuarios */}
             <div className="row row-cols-1 g-4">
               {users.map((user) => (
                 <div key={user.id} className="col-12">

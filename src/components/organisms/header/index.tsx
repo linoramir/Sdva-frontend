@@ -49,7 +49,7 @@ export const Header = ({
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Cerrar menú al hacer click fuera
+  // Cerrar menú al hacer click fueraK
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -126,18 +126,45 @@ export const Header = ({
           </div>
         </div>
 
-        {/* Links centrales - oculto en móvil */}
+        {/* Buscador en barra superior */}
         {!isMobile && (
-          <div style={{ display: "flex", gap: "24px" }}>
-            {[1, 2, 3, 4].map((i) => (
-              <a
-                key={i}
-                href="#"
-                style={{ color: "#999", textDecoration: "none", fontSize: "14px" }}
+          <div style={{ display: "flex", gap: "12px", flex: 1, maxWidth: "400px", justifyContent: "center" }}>
+            <div style={{ position: "relative", flex: 1, minWidth: "200px" }}>
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={searchValue}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && onSearch?.()}
+                style={{
+                  width: "100%",
+                  padding: "10px 14px 10px 38px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#999",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                Lorem
-              </a>
-            ))}
+                <ImSearch size={16} />
+              </span>
+            </div>
+            <BtnAction
+              variant="primary"
+              style={{ whiteSpace: "nowrap" }}
+              onClick={onSearch}
+            >
+              Buscar
+            </BtnAction>
           </div>
         )}
 
@@ -257,86 +284,89 @@ export const Header = ({
         </div>
       </div>
 
-      {/* Nombre de la página */}
-      <h1
-        style={{
-          fontSize: isMobile ? "22px" : "28px",
-          fontWeight: "700",
-          color: "#333",
-          marginBottom: "24px",
-        }}
-      >
-        {pageName}
-      </h1>
-
-      {/* Searchbar + acción derecha */}
+      {/* Nombre de la página + buscador móvil y acción derecha */}
       <div
         style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: isMobile ? "stretch" : "center",
+          alignItems: isMobile ? "stretch" : "flex-end",
           gap: "16px",
+          marginBottom: isMobile ? undefined : "8px",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            gap: "12px",
-            flex: 1,
-            maxWidth: isMobile ? "100%" : "500px",
-          }}
-        >
-          <div style={{ position: "relative", flex: 1 }}>
-            <input
-              type="text"
-              placeholder="Buscar"
-              value={searchValue}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && onSearch?.()}
-              style={{
-                width: "100%",
-                padding: "12px 16px 12px 40px",
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
-                fontSize: "14px",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                left: "12px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "#999",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <ImSearch size={18} />
-            </span>
-          </div>
-          {!isMobile && (
-            <BtnAction
-              variant="primary"
-              style={{ whiteSpace: "nowrap" }}
-              onClick={onSearch}
-            >
-              Buscar
-            </BtnAction>
-          )}
-        </div>
-        {rightAction && (
-          <div
+        {pageName ? (
+          <h1
             style={{
-              display: "flex",
-              alignItems: "center",
+              fontSize: isMobile ? "22px" : "28px",
+              fontWeight: "700",
+              color: "#333",
+              margin: 0,
             }}
           >
-            {rightAction}
+            {pageName}
+          </h1>
+        ) : null}
+        {/* Buscador solo en móvil (en desktop ya está arriba) */}
+        {isMobile && (
+          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            <div style={{ position: "relative", flex: 1 }}>
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={searchValue}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && onSearch?.()}
+                style={{
+                  width: "100%",
+                  padding: "12px 16px 12px 40px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#999",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <ImSearch size={18} />
+              </span>
+            </div>
           </div>
-        )}
+)}
+{!isMobile && (
+  <>
+    <BtnAction
+      variant="primary"
+      style={{ whiteSpace: "nowrap" }}
+      onClick={onSearch}
+    >
+      Buscar
+    </BtnAction>
+
+    {rightAction && (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        {rightAction}
       </div>
+    )}
+  </>
+)}
+
+      </div>
+      {/* Acción derecha en móvil (debajo si hace falta) */}
+      {isMobile && rightAction}
     </header>
   );
 };
