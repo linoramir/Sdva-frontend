@@ -2,28 +2,17 @@
 
 import { useState } from "react";
 import { FaTrash, IoOpen } from "@/components/atoms/icons";
+import type { IUser } from "@/interfaces";
 
 export interface CardUserProps {
-  id: string;
-  nombre: string;
-  numeroBoleta: number;
-  correo: string;
-  telefono: string;
-  fechaBoleta: string;
-  saldo: string;
+  user: IUser;
   onOpen?: () => void;
   onDelete?: () => void;
   className?: string;
 }
 
 export const CardUser = ({
-  id,
-  nombre,
-  numeroBoleta,
-  correo,
-  telefono,
-  fechaBoleta,
-  saldo,
+  user,
   onOpen,
   onDelete,
   className = "",
@@ -47,18 +36,18 @@ export const CardUser = ({
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
-            aria-controls={`card-user-body-${id}`}
+            aria-controls={`card-user-body-${user.id}`}
           >
             <span className="d-flex w-100 justify-content-between align-items-center me-2">
-              <span>{nombre}</span>
+              <span>{user.name}</span>
               <span className="badge bg-primary ms-2">
-                Boleta #{numeroBoleta}
+                Boleta #{user.receiptNumber}
               </span>
             </span>
           </button>
         </h2>
         <div
-          id={`card-user-body-${id}`}
+          id={`card-user-body-${user.id}`}
           className={`accordion-collapse collapse ${isOpen ? "show" : ""}`}
           style={
             isOpen
@@ -74,21 +63,21 @@ export const CardUser = ({
             <div className="row g-2">
               <div className="col-3">
                 <span className="text-body-secondary small d-block">Correo</span>
-                <span className="text-break">{correo}</span>
+                <span className="text-break">{user.email}</span>
               </div>
               <div className="col-3">
                 <span className="text-body-secondary small d-block">Teléfono</span>
-                <span className="text-break">{telefono}</span>
+                <span className="text-break">{user.phone}</span>
               </div>
               <div className="col-3">
                 <span className="text-body-secondary small d-block">
                   Fecha de boleta
                 </span>
-                <span className="text-break">{fechaBoleta}</span>
+                <span className="text-break">{user.receiptDate}</span>
               </div>
               <div className="col-3 text-end">
                 <span className="text-body-secondary small d-block">Saldo</span>
-                <span className="badge bg-success">{saldo}</span>
+                <span className="badge bg-success">{user.balance}</span>
               </div>
             </div>
             {showActions && (

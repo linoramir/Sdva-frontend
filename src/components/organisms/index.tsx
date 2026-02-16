@@ -8,6 +8,6 @@ import { PrivateRoute } from "./routers/private";
 import { CustomTabs } from "./tabs/customTabs";
 
 export { CardUser, Detail, Ticket, FormSignin, Header, Navbar, PublicRoute, PrivateRoute, CustomTabs };
-export type { CardUserProps, DetailProps, DetailUser, TicketProps, TicketItem } from "./cards";
+export type { CardUserProps, DetailProps } from "./cards";
 export type { HeaderProps, HeaderUser } from "./header";
 export type { NavbarProps, NavbarMenuItem } from "./navbar";
