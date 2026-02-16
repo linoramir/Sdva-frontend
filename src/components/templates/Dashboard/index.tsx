@@ -7,7 +7,7 @@ import type { DetailUser } from "@/components/organisms";
 
 export const TempleDashboard = () => {
   const router = useRouter();
-  const [activeMenu, setActiveMenu] = useState("usuarios");
+  const [activeMenu, setActiveMenu] = useState("inicio");
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -30,6 +30,29 @@ export const TempleDashboard = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const handleMenuChange = (id: string) => {
+    setActiveMenu(id);
+    switch (id) {
+      case "inicio":
+        router.push("/dashboard");
+        break;
+      case "management":
+        router.push("/management");
+        break;
+      case "trade":
+        router.push("/trade");
+        break;
+      case "metrics":
+        router.push("/metrics");
+        break;
+      case "alerts":
+        router.push("/alerts");
+        break;
+      default:
+        break;
+    }
+  };
 
   // Datos de ejemplo para las cards de usuarios
   const users = [
@@ -102,11 +125,10 @@ export const TempleDashboard = () => {
     >
       <Navbar
         activeMenu={activeMenu}
-        onMenuChange={setActiveMenu}
+        onMenuChange={handleMenuChange}
         isMobile={isMobile}
         sidebarOpen={sidebarOpen}
         onToggleSidebar={() => setSidebarOpen(false)}
-        onLogout={() => router.push("/")}
       />
 
       {/* Contenido principal: en móvil ocupa todo el ancho cuando sidebar está cerrado */}
