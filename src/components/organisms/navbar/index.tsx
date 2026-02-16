@@ -17,19 +17,14 @@ export interface NavbarProps {
   isMobile: boolean;
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
-  onLogout: () => void;
 }
 
 const MENU_ITEMS: NavbarMenuItem[] = [
   { id: "inicio", label: "Inicio", icon: "🏠" },
-  { id: "usuarios", label: "Gestión de usuarios", icon: "👥" },
-  { id: "servidores", label: "Análisis de servidores", icon: "🖥️" },
-  {
-    id: "preferencias",
-    label: "Análisis de preferencias y recomendaciones",
-    icon: "📊",
-  },
-  { id: "reportes", label: "Reportes", icon: "📄" },
+  { id: "management", label: "Gestión de boletas", icon: "📄" },
+  { id: "trade", label: "Análisis de comercio", icon: "📊" },
+  { id: "metrics", label: "Métricas", icon: "📈" },
+  { id: "alerts", label: "Alertas", icon: "⚠️" },
 ];
 
 export const Navbar = ({
@@ -38,7 +33,6 @@ export const Navbar = ({
   isMobile,
   sidebarOpen,
   onToggleSidebar,
-  onLogout,
 }: NavbarProps) => {
   return (
     <>
@@ -138,7 +132,6 @@ export const Navbar = ({
               <span>{item.label}</span>
             </div>
           ))}
-
           {/* Logout */}
           <div
             onClick={() => {
